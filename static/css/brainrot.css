@@ -1,0 +1,50 @@
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: "Courier New", Courier, monospace;
+  background: black;
+}
+
+/* Video Background */
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+/* Overlay Content */
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #e9d5ff;
+  text-align: center;
+  text-shadow: 0px 0px 15px #ff0, -5px 0px #f00, 5px 0px #00f;
+}
+
+.overlay h1 {
+  font-size: 5rem;
+  text-transform: uppercase;
+  animation: glitch 1s infinite;
+}
+
+/* Glitch Animation */
+@keyframes glitch {
+  0%,
+  100% {
+    text-shadow: 0px 0px 5px #ff0, -5px 0px #f00, 5px 0px #00f;
+  }
+  50% {
+    text-shadow: -2px 2px #00f, 2px -2px #f00, 0px 0px 10px #ff0;
+  }
+}

@@ -1,0 +1,160 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/profile.css') }}"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+{% extends "base.html" %} {% block content %}
+<div class="profile-container">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-info">
+      <img
+        class="profile-image"
+        src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+        alt="Profile Image"
+      />
+      <div class="usernameContainer">
+        <h1 class="profileUsername">{{ user.username }}</h1>
+      </div>
+      <a class="profileLogout" href="/logout">LOG OUT</a>
+    </div>
+  </div>
+
+  <!-- Metrics History Section -->
+  <div class="metrics-history-container">
+    <!-- Progress Monitoring Graphs -->
+    <div class="progress-monitoring">
+      <div class="chart-container">
+        <h3>Heart Rate Progress</h3>
+        <canvas id="heartRateChart" class="chart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>Blood Pressure Progress</h3>
+        <canvas id="bloodPressureChart" class="chart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>Calorie Count Progress</h3>
+        <canvas id="calorieCountChart" class="chart"></canvas>
+      </div>
+    </div>
+    <h2 class="metrics-history-title">Your Metrics History</h2>
+
+    <div id="metrics-history"></div>
+  </div>
+</div>
+
+<script>
+  const metricsData = [
+    {% for metric in metrics %}
+      {
+        "timestamp": "{{ metric.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}",
+        "heart_rate": {{ metric.heart_rate }},
+        "blood_pressure_systolic": {{ metric.blood_pressure_systolic }},
+        "blood_pressure_diastolic": {{ metric.blood_pressure_diastolic }},
+        "calorie_count": {{ metric.calorie_count }}
+      },
+    {% endfor %}
+  ];
+
+  const metricsHistoryContainer = document.getElementById("metrics-history");
+
+  if (metricsData && metricsData.length > 0) {
+    metricsData.forEach((metric) => {
+      const metricItem = document.createElement("div");
+      metricItem.className = "metric-item";
+
+      metricItem.innerHTML = `
+        <p><strong>Date:</strong> ${metric.timestamp}</p>
+        <p><strong>Heart Rate:</strong> ${metric.heart_rate} BPM</p>
+        <p><strong>Blood Pressure:</strong> ${metric.blood_pressure_systolic}/${metric.blood_pressure_diastolic}</p>
+        <p><strong>Calorie Count:</strong> ${metric.calorie_count}</p>
+      `;
+
+      metricsHistoryContainer.appendChild(metricItem);
+    });
+
+    // Create Graphs
+    const heartRateData = metricsData.map(metric => metric.heart_rate);
+    const bloodPressureData = metricsData.map(metric => metric.blood_pressure_systolic);
+    const calorieCountData = metricsData.map(metric => metric.calorie_count);
+    const timestamps = metricsData.map(metric => metric.timestamp);
+
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: false
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            maxTicksLimit: 5
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    };
+
+    // Heart Rate Chart
+    const heartRateCtx = document.getElementById('heartRateChart').getContext('2d');
+    new Chart(heartRateCtx, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Heart Rate (BPM)',
+          data: heartRateData,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+        }]
+      },
+      options: chartOptions
+    });
+
+    // Blood Pressure Chart
+    const bloodPressureCtx = document.getElementById('bloodPressureChart').getContext('2d');
+    new Chart(bloodPressureCtx, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Blood Pressure (Systolic)',
+          data: bloodPressureData,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: true,
+        }]
+      },
+      options: chartOptions
+    });
+
+    // Calorie Count Chart
+    const calorieCountCtx = document.getElementById('calorieCountChart').getContext('2d');
+    new Chart(calorieCountCtx, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Calorie Count',
+          data: calorieCountData,
+          borderColor: 'rgba(153, 102, 255, 1)',
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          fill: true,
+        }]
+      },
+      options: chartOptions
+    });
+  } else {
+    metricsHistoryContainer.innerHTML = "<p>No metrics recorded yet.</p>";
+  }
+</script>
+{% endblock %}

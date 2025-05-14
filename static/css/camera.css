@@ -1,0 +1,244 @@
+* {
+  color: #f3e8ff;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.camcontainer {
+  display: flex;
+  flex-direction: row; /* Ensure items are side by side */
+  width: 100%;
+  background-color: transparent;
+  padding: 2rem;
+  border-radius: 15px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.5s ease-in;
+  justify-content: space-between; /* Ensure content is spaced evenly */
+  gap: 2rem;
+  align-items: start;
+}
+.cam_content {
+  margin: 0 auto;
+}
+h1,
+h2 {
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+  color: #f3e8ff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.camera-section,
+.upload-section {
+  background: rgba(26, 16, 63, 0.8);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  width: 100%;
+  max-width: 400px;
+}
+
+.camera-section:hover,
+.upload-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0px 32px #5b21b6;
+  border-color: rgba(139, 92, 246, 0.6);
+}
+
+video,
+#capturedImage {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 10px;
+  display: block;
+  margin: 1rem auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+button {
+  background: #4c1d95;
+  color: #f3e8ff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-in;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+button:hover:not(:disabled) {
+  background: #5b21b6;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+  border-color: rgba(139, 92, 246, 0.6);
+}
+
+button:disabled {
+  background: #1f1646;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+#uploadForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+input[type="file"],
+input[type="url"] {
+  padding: 0.8rem;
+  border-radius: 5px;
+  border: 1px solid #4c1d95;
+  background: rgba(26, 16, 63, 0.8);
+  color: #f3e8ff;
+}
+
+input[type="url"]::placeholder {
+  color: #9ca3af;
+}
+
+#result {
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto;
+  margin-top: 2rem;
+  background: rgba(26, 16, 63, 0.9);
+  color: #f3e8ff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  animation: slideUp 0.5s ease-out;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  line-height: 1.6;
+}
+
+#result h1,
+#result h2,
+#result h3 {
+  color: #c4b5fd;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+#result ul,
+#result ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#result li {
+  margin-bottom: 0.5rem;
+}
+
+#result p {
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+canvas {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+  .camcontainer {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .camera-section,
+  .upload-section {
+    width: 100%;
+    max-width: none;
+    padding: 1rem;
+  }
+
+  video,
+  #capturedImage {
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+
+  button {
+    padding: 0.6rem 1.2rem;
+  }
+
+  #result {
+    margin-top: 1.5rem;
+    padding: 1rem;
+  }
+
+  input[type="file"],
+  input[type="url"] {
+    padding: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .camcontainer {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .camera-section,
+  .upload-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+  }
+
+  #result {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+}
